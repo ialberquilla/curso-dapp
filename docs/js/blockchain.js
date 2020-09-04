@@ -2,7 +2,9 @@ var provider;
 var signer;
 var contract;
 
-
+/**
+ * Listener to execute the functions after the window loads
+ */
 window.addEventListener('load', async () => {
     if (typeof window.ethereum !== 'undefined') {
         window.ethereum.enable()
@@ -17,7 +19,9 @@ window.addEventListener('load', async () => {
     }
 })
 
-
+/**
+ * Return the counts of the contract and sets in the html
+ */
 async function getCounts() {
     const playaCount = await contract.functions.getVoteCount("Playa");
     const montanaCount = await contract.functions.getVoteCount("Montaña");
@@ -31,6 +35,9 @@ async function getCounts() {
 }
 
 
+/**
+ * Function to listen the click event on the buttons vote
+ */
 $('.vote-btn').click(function () {
     contract.vote(this.value).then(res => {
         console.log(res)
@@ -42,6 +49,10 @@ $('.vote-btn').click(function () {
 
 })
 
+/**
+ * Function to call the allow address
+ * @param {event of the button} event 
+ */
 async function allowAddress(event) {
     event.preventDefault()
     contract.allowVote(event.target.elements.address.value)
@@ -54,6 +65,9 @@ async function allowAddress(event) {
         })
 }
 
+/**
+ * Shows new div when the authenticated user is on the web
+ */
 async function showOwnerDiv() {
     const owner = await contract.functions.getOwner();
     const user = await signer.getAddress();
@@ -62,7 +76,11 @@ async function showOwnerDiv() {
     }
 }
 
-
+/**
+ * Shows the div with the transaction result or error
+ * @param {transaction result} result 
+ * @param {transaction error} err 
+ */
 function transactionResult(result, err) {
     var div = document.getElementById('result-tx');
     div.innerHTML = '';
